@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decentralized Image Storage</title>
+
+    <style>
+        body {
+            font-family: 'Helvetica', Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #009688;
+            padding: 10px;
+            width: 100%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        .logo {
+            width: 150px; /* Adjusted width for higher resolution */
+            height: 150px; /* Adjusted height for higher resolution */
+            margin-bottom: 10px; /* Added margin to separate logo from form */
+        }
+
+        h1, h2 {
+            color: #009688;
+        }
+
+        form {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        input[type="file"] {
+            margin-right: 10px;
+            padding: 10px;
+            border: 2px solid #009688;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button {
+            background-color: #009688;
+            color: #fff;
+            padding: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #00796b;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        li {
+            background-color: #fff;
+            margin: 10px;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        img {
+            max-width: 100%;
+            max-height: 150px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        /* Grey-colored box at the bottom */
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #666;
+            color: #fff;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .love-text {
+            color: #000;
+        }
+
+        .yellow-text {
+            color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Decentralized Image Storage Demo</h1>
+        <img class="logo" src="D:\Coding\decentralized storage test 1/codebyte-high-resolution-logo-black.png" alt="Logo">
+    </header>
+
+    <h2 style="margin-top: 20px;">Upload Image</h2>
+    <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" name="file" accept="image/*" required>
+        <button type="button" onclick="uploadImage()">Upload</button>
+    </form>
+
+    <h2>Uploaded Images</h2>
+    <ul id="imageList"></ul>
+
+    <div class="footer">
+        <span class="love-text">Made with Love, By-</span>
+        <span class="yellow-text">Daksh Raj, Krishna Singh</span>
+    </div>
+
+    <script>
+        async function uploadImage() {
+            const formData = new FormData(document.getElementById('uploadForm'));
+            try {
+                const response = await fetch('http://127.0.0.1:5000/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+                alert(result.success || result.error);
+                if (result.success) {
+                    // Reload the image list after successful upload
+                    getImageList();
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        }
+
+        async function getImageList() {
+            try {
+                const response = await fetch('http://127.0.0.1:5000/images');
+                const result = await response.json();
+                const imageList = document.getElementById('imageList');
+                imageList.innerHTML = result.images.map(image => `<li><img src="${image}" alt="Uploaded Image"><br>${image}</li>`).join('');
+            } catch (error) {
+                console.error('Error fetching image list:', error);
+            }
+        }
+
+        // Initial image list retrieval
+        getImageList();
+    </script>
+</body>
+</html>
