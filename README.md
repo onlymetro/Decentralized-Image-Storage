@@ -33,6 +33,7 @@ def index():
     pass
     
 These are the Flask commands:
+
 /upload: Handles image uploads.
 /images: Retrieves the list of uploaded images.
 /: Renders the main HTML page.
@@ -41,6 +42,7 @@ Image Directory Creation:
 
 def create_images_directory():
     os.makedirs(images_directory, exist_ok=True)
+    
 This function creates the directory for storing images if it doesn't exist.
 
 Blockchain Initialization:
@@ -50,8 +52,6 @@ def init_blockchain():
     global blockchain
     blockchain = Web3(Web3.EthereumTesterProvider())
 
-    # Smart contract source code
-    # (Simple image ownership contract with an 'uploadImage' function)
     contract_source_code = """
     pragma solidity ^0.8.0;
 
@@ -71,11 +71,9 @@ def init_blockchain():
     }
     """
 
-    # Compile the contract
     compiled_contract = blockchain.eth.compileSolidity(contract_source_code)
     contract_interface = compiled_contract['<stdin>:ImageOwnership']
-
-    # Deploy the contract
+    
     contract = blockchain.eth.contract(abi=contract_interface['abi'], bytecode=contract_interface['bin'])
     transaction_hash = contract.constructor().transact()
     transaction_receipt = blockchain.eth.waitForTransactionReceipt(transaction_hash)
