@@ -1,7 +1,5 @@
 # Decentralized-Image-Storage
-This code is a Python script using the Flask web framework and the Web3 library for interacting with Ethereum. It provides a simple web application that allows users to upload images, view the list of uploaded images, and interact with a basic Ethereum smart contract for image ownership.
-
-Let's break down the code:
+Here we have a Python script made using Flask and Web3 for interacting with Ethereum. It provides a simple web application that allows users to upload images, view uploaded images, and interact with a basic Ethereum smart contract for image ownership.
 
 Flask Setup:
 
@@ -14,7 +12,7 @@ import os
 app = Flask(__name__)
 images_directory = "images/"
 blockchain = None
-This section imports necessary libraries, initializes a Flask app, sets the directory for storing uploaded images (images_directory), and declares a variable (blockchain) to store the Web3 instance later.
+First we start by importing necessary libraries,then,we initialize a Flask app.We need to set adirectory for storing uploaded images (images_directory), and declare a variable (blockchain) to store the Web3 instance later.
 
 Flask Routes:
 
